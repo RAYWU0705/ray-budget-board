@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ray Budget Board｜明叡的預算管理網站</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <nav class="topbar">
+        <div class="brand">
+          <div class="brand-badge">R$</div>
+          <div>
+            <p class="eyebrow">Ray Portal Project</p>
+            <h1>Ray Budget Board</h1>
+          </div>
+        </div>
+        <div class="top-actions">
+          <button id="seedBtn" class="ghost-btn" type="button">重置範例資料</button>
+          <button id="clearBtn" class="danger-ghost-btn" type="button">清空資料</button>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="pill">明叡的預算管理網站</p>
+          <h2>錢包不要突然被盜壘。</h2>
+          <p>
+            管理日常花費、看球預算、交通餐費與網站專案支出。
+            每一筆支出都記錄起來，讓預算守備更穩。
+          </p>
+        </div>
+
+        <div class="budget-card">
+          <div class="budget-card-header">
+            <div>
+              <p class="eyebrow">Monthly Budget</p>
+              <h3>本月預算設定</h3>
+            </div>
+            <span id="budgetStatusBadge" class="status-badge safe">守備穩定</span>
+          </div>
+
+          <div class="budget-input-row">
+            <label for="budgetInput">本月預算</label>
+            <div class="money-input">
+              <span>$</span>
+              <input id="budgetInput" type="number" min="0" step="1" placeholder="輸入本月預算" />
+            </div>
+            <button id="saveBudgetBtn" type="button">儲存</button>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-info">
+              <span id="budgetUsageText">已使用 0%</span>
+              <span id="remainingText">剩餘 $0</span>
+            </div>
+            <div class="progress-track">
+              <div id="budgetProgressBar" class="progress-bar safe" style="width: 0%;"></div>
+            </div>
+            <p id="budgetMessage" class="budget-message">先設定本月預算，讓錢包守備站好位置。</p>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="stats-grid" aria-label="預算統計卡片">
+        <article class="stat-card">
+          <p>本月總支出</p>
+          <strong id="monthTotal">$0</strong>
+          <span>這個月的火力輸出</span>
+        </article>
+        <article class="stat-card">
+          <p>今日支出</p>
+          <strong id="todayTotal">$0</strong>
+          <span>今天錢包掉幾分</span>
+        </article>
+        <article class="stat-card">
+          <p>看球支出</p>
+          <strong id="baseballTotal">$0</strong>
+          <span>進場應援成本</span>
+        </article>
+        <article class="stat-card">
+          <p>剩餘預算</p>
+          <strong id="remainingBudget">$0</strong>
+          <span>九局下半還有多少子彈</span>
+        </article>
+      </section>
+
+      <section class="control-panel">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">Expense Dugout</p>
+            <h2 id="formTitle">新增支出紀錄</h2>
+          </div>
+          <button id="cancelEditBtn" class="ghost-btn hidden" type="button">取消編輯</button>
+        </div>
+
+        <form id="expenseForm" class="expense-form">
+          <input type="hidden" id="expenseId" />
+
+          <div class="form-field">
+            <label for="nameInput">項目名稱</label>
+            <input id="nameInput" type="text" placeholder="例如：看球門票" required />
+          </div>
+
+          <div class="form-field">
+            <label for="amountInput">金額</label>
+            <input id="amountInput" type="number" min="1" step="1" placeholder="例如：1500" required />
+          </div>
+
+          <div class="form-field">
+            <label for="categoryInput">分類</label>
+            <select id="categoryInput" required>
+              <option value="餐費">餐費</option>
+              <option value="交通">交通</option>
+              <option value="看球">看球</option>
+              <option value="學校">學校</option>
+              <option value="廟宇">廟宇</option>
+              <option value="網站專案">網站專案</option>
+              <option value="生活用品">生活用品</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="dateInput">日期</label>
+            <input id="dateInput" type="date" required />
+          </div>
+
+          <div class="form-field">
+            <label for="paymentInput">支付方式</label>
+            <select id="paymentInput" required>
+              <option value="現金">現金</option>
+              <option value="悠遊卡">悠遊卡</option>
+              <option value="LINE Pay">LINE Pay</option>
+              <option value="街口">街口</option>
+              <option value="信用卡">信用卡</option>
+              <option value="其他">其他</option>
+            </select>
+          </div>
+
+          <div class="form-field note-field">
+            <label for="noteInput">備註</label>
+            <input id="noteInput" type="text" placeholder="例如：天母看球、英文課前晚餐" />
+          </div>
+
+          <button class="primary-btn" type="submit">存進記分板</button>
+        </form>
+      </section>
+
+      <section class="dashboard-grid">
+        <section class="list-card">
+          <div class="panel-title">
+            <div>
+              <p class="eyebrow">Scoreboard Filter</p>
+              <h2>支出紀錄</h2>
+            </div>
+          </div>
+
+          <div class="filters">
+            <div class="form-field">
+              <label for="monthFilter">月份篩選</label>
+              <input id="monthFilter" type="month" />
+            </div>
+            <div class="form-field">
+              <label for="categoryFilter">分類篩選</label>
+              <select id="categoryFilter">
+                <option value="全部">全部分類</option>
+                <option value="餐費">餐費</option>
+                <option value="交通">交通</option>
+                <option value="看球">看球</option>
+                <option value="學校">學校</option>
+                <option value="廟宇">廟宇</option>
+                <option value="網站專案">網站專案</option>
+                <option value="生活用品">生活用品</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="expenseList" class="expense-list"></div>
+          <div id="emptyState" class="empty-state hidden">
+            <strong>目前沒有支出紀錄</strong>
+            <p>錢包守備很穩，但也可能只是還沒登錄。</p>
+          </div>
+        </section>
+
+        <aside class="summary-card">
+          <div class="panel-title">
+            <div>
+              <p class="eyebrow">Category Report</p>
+              <h2>分類統計</h2>
+            </div>
+          </div>
+          <div id="categorySummary" class="category-summary"></div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Ray Budget Board v1.0｜純前端、localStorage 儲存｜錢包守備率提升中</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
